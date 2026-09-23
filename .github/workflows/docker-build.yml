@@ -15,11 +15,13 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout Upstream Code
+      - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          repository: bouderer/cline2api
-          ref: main
+
+      - name: Sanitize npm mirrors in lockfile
+        run: |
+          sed -i 's|http://mirrors.tencentyun.com/npm/|https://registry.npmjs.org/|g' cline2api/package-lock.json || true
+          sed -i 's|https://registry.npmmirror.com/|https://registry.npmjs.org/|g' cline2api/package-lock.json || true
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
